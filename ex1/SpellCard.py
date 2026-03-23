@@ -4,9 +4,11 @@ from ex0.Card import Card
 class SpellCard(Card):
     def __init__(self, name: str, cost: int, rarity: str, effect_type: str):
        super().__init__(name, cost, rarity)
-       if effect_type is not "damage" "heal" "buff" "debuff":
+       if not "damage" in effect_type:
           raise ValueError("Unknown effect type")
        self.effect_type = effect_type
+       self.effect = ""
+       self.type = "spell"
 
     def get_card_info(self):
         infos: dict = super().get_card_info()
@@ -25,4 +27,26 @@ class SpellCard(Card):
                }
 
     def resolve_effect(self, targets: list) -> dict:
-       pass
+        effect: str = None
+        if self.effect_type == "damage":
+          effect = "Health Debuff -3"
+          for target in targets:
+             target.health -= 3
+        elif self.effect_type == "heal":
+          effect = "Health Debuff +3"
+          for target in targets:
+             target.health += 3
+        elif self.effect_type == "buff":
+          effect = "Attack Debuff +2"
+          for target in targets:
+             target.attack += 2
+        elif self.effect_type == "debuff":
+          effect = "Attack Debuff -2"
+          for target in targets:
+             target.attack -= 2
+        else:
+          raise ValueError("Unknown type effect")
+        return {"card_played": self.name,
+                "targets": [target.name for target in targets],
+                "Effect": effect
+                }

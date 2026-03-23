@@ -5,12 +5,13 @@ class CreatureCard(Card):
     def __init__(self, name: str, cost: int,
                  rarity: str, attack: int, health: int):
         super().__init__(name, cost, rarity)
-        if attack < 0:
+        if attack <= 0:
             raise ValueError("Attack damage must be positive")
         self.attack = attack
         if health < 0:
             raise ValueError("Health must be positive")
         self.health = health
+        self.type = "Creature"
 
     def play(self, game_state: dict) -> dict:
         if game_state['mana'] < self.cost:
