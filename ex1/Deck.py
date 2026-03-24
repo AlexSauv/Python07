@@ -22,17 +22,25 @@ class Deck:
             random.shuffle(self.cards)
 
     def draw_card(self) -> Card:
-        pass
+        if not self.cards:
+            raise ValueError("The Deck is empty")
+        return self.cards.pop(0)
 
     def get_deck_stats(self) -> dict:
-        total = len(self.cards)
-        creature = len(1 for card in self.cards if card.type == "creature")
-        spells = len(1 for card in self.cards if card.type == "spell")
-        artifact = len(1 for card in self.cards if card.type == "artifact")
-        avg_cost = sum(card.cost for card in self.cards) / total
-        return {"total_cards": total,
-                "creatures": creature,
-                "spells": spells,
-                "artifacts": artifact,
-                "avg_cost": avg_cost
-                }
+        try:
+            total = len(self.cards)
+            creature = sum(1 for card in self.cards if card.type == "Creature")
+            spells = sum(1 for card in self.cards if card.type == "Spell")
+            artifact = sum(1 for card in self.cards if card.type == "Artifact")
+            if total != 0:
+                avg_cost = round(sum(card.cost for card in self.cards) / total, 1)
+            else:
+                avg_cost = 0
+            return {"total_cards": total,
+                    "creatures": creature,
+                    "spells": spells,
+                    "artifacts": artifact,
+                    "avg_cost": avg_cost
+                    }
+        except Exception as err:
+            print(err)

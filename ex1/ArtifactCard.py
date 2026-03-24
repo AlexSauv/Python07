@@ -7,12 +7,11 @@ class ArtifactCard(Card):
         super().__init__(name, cost, rarity)
         self.durability = durability
         self.effect = effect
-        self.type = "artifact"
+        self.type = "Artifact"
 
     def get_card_info(self):
         infos: dict = super().get_card_info()
-        infos.update({'card_played': self.name,
-                      'mana_used': self.cost,
+        infos.update({'durability': self.durability,
                       'effect': self.effect,
                       'type': self.type
                       })
