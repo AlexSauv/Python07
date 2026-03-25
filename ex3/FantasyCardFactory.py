@@ -11,7 +11,7 @@ class FantasyCardFactory(CardFactory):
         self.spells = ["Thunder Storm", "Regeneration", "Fireball"]
         self.artifacts = ["Diamond Hammer", "Mana Ring", "Potion of health", "Demon Slasher"]
         self.rarity = ["Commun", "Legendary", "Rare"]
-        self.effect_type = ["Damage", "Heal", "Debuff", "Buff"]
+        self.effect_type = ["damage", "heal", "debuff", "buff"]
 
     def create_creature(self, name_or_power = None):
         if isinstance(name_or_power, str):
