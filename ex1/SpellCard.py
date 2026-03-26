@@ -1,4 +1,5 @@
 from ex0.Card import Card
+from ex0.CreatureCard import CreatureCard
 
 
 class SpellCard(Card):
@@ -10,6 +11,7 @@ class SpellCard(Card):
        self.effect_type = effect_type
        self.effect = ""
        self.type = "Spell"
+       self.active = False
 
     def get_card_info(self):
         infos: dict = super().get_card_info()
@@ -22,14 +24,20 @@ class SpellCard(Card):
         if game_state['mana'] < self.cost:
           raise ValueError("Not enough mana")
         game_state['mana'] -= self.cost
+        if "battlefield" not in game_state:
+            game_state.update({"battlefield": []})
+        game_state.setdefault("battlefield", []).append(self)
+        if self.active == True:
+            if self.name in game_state["battlefield"]:
+                game_state["battlefield"].remove(self)
         if self.effect_type == "damage":
             self.effect = "Deal 3 damage to target"
         elif self.effect_type == "heal":
-            self.effect = "Health buff +3"
+            self.effect = "Add +3 to the target health"
         elif self.effect_type == "buff":
-            self.effect = "Attack Debuff +2"
+            self.effect = "Add +2 to the target attacks"
         elif self.effect_type == "debuff":
-            self.effect = "Attack Debuff -2"
+            self.effect = "Minus 2 on targets attack"
         else:
            raise ValueError("The effect type is unknown")
         return {"card_played": self.name,
@@ -38,26 +46,28 @@ class SpellCard(Card):
                 }
 
     def resolve_effect(self, targets: list) -> dict:
-        effect: str = None
-        if self.effect_type == "damage":
-          effect = "Deal 3 damage to target"
-          for target in targets:
-             target.health -= 3
-        elif self.effect_type == "heal":
-          effect = "Health Debuff +3"
-          for target in targets:
-             target.health += 3
-        elif self.effect_type == "buff":
-          effect = "Attack Debuff +2"
-          for target in targets:
-             target.attack += 2
-        elif self.effect_type == "debuff":
-          effect = "Attack Debuff -2"
-          for target in targets:
-             target.attack -= 2
-        else:
-          raise ValueError("Unknown type effect")
+        from ex2.EliteCard import EliteCard
+        if not isinstance(targets, list):
+             raise ValueError("Targets must be given as a list.")
+        for target in targets:
+            if not isinstance(target, (CreatureCard, EliteCard)):
+              raise ValueError("Each target must be Creature or Elite type.")
+            if self.effect_type == "damage":
+               target.health -= 3
+               if target.health < 0:
+                   target.health = 0
+            elif self.effect_type == "heal":
+               target.health += 3
+            elif self.effect_type == "buff":
+               target.attack += 2
+            elif self.effect_type == "debuff":
+                target.attack -= 2
+                if target.attack < 1:
+                    target.attack = 1
+            else:
+                raise ValueError("Unknown type effect")
+        self.active = True
         return {"card_played": self.name,
                 "targets": [target.name for target in targets],
-                "Effect": effect
+                "Effect": self.effect
                 }

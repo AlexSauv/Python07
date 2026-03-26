@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
+from ex0.Card import Rarity
 from ex0.CreatureCard import CreatureCard
+import random
 
 
 def main() -> None:
     print("\n=== DataDeck Card Foundation ===\n")
     try:
-        dragon = CreatureCard("Fire Dragon", 5, "Legendary", 7, 5)
+        rarity: list = random.choice(list(Rarity))
+        dragon = CreatureCard("Fire Dragon", 5, rarity.value, 7, 5)
         goblin = CreatureCard("Goblin Warrior", 1, "common", 3, 4)
         print("Testing Abstract Base Class Design:\n")
         print("CreatureCard Info:")
         print(dragon.get_card_info())
         game: dict = {
-            "board": [],
             "mana": 8
             }
         playable: bool = dragon.is_playable(game['mana'])
@@ -24,7 +26,7 @@ def main() -> None:
         print(f"Playable: {dragon.is_playable(game['mana'])}")
         print("\nAbstract pattern successfully demonstrated!")
     except Exception as err:
-        print(f"\nERROR: {err}")
+        print(f"\nGame System Error: {err}")
 
 
 if __name__ == "__main__":

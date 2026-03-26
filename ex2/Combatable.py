@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from ex0.Card import Card
 
 
 class Combatable(ABC):
