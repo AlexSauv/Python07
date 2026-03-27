@@ -2,22 +2,21 @@ from ex0.Card import Card
 from ex0.CreatureCard import CreatureCard
 from ex1.SpellCard import SpellCard
 from ex1.ArtifactCard import ArtifactCard
+from ex1.Deck import Deck
 from ex2.EliteCard import EliteCard
 from ex3.GameStrategy import GameStrategy
-from ex1.Deck import Deck
 
 
 class AggressiveStrategy(GameStrategy):
     def __init__(self):
         self.deck = Deck()
-        self.game = {"Player_side": [],
+        self.game = {"player_side": [],
                      "opponent_health": 15,
                      "Game_win": False}
 
     def execute_turn(self, hand: list, battlefield: list) -> dict:
         self.game.update({"mana": 12})
-        damage_done: int = 0
-        spell_used = []
+        damage_done = 0
         target_killed = []
         if isinstance(battlefield, list):
             for target in battlefield:
@@ -36,10 +35,10 @@ class AggressiveStrategy(GameStrategy):
             if not isinstance(card, Card):
                 raise ValueError("The hand must be a card type")
             if card.is_playable(self.game["mana"]):
-                if card not in self.game["Player_side"]:
+                if card not in self.game["player_side"]:
                     card.play(self.game)
                     self.deck.draw_card()
-                    self.game["Player_side"].append(card)
+                    self.game["player_side"].append(card)
                 if isinstance(card, CreatureCard):
                     if len(targets) == 0:
                         self.game["opponent_health"] -= card.attack
@@ -80,7 +79,7 @@ class AggressiveStrategy(GameStrategy):
             self.game["Game_win"] = True
         return {"Strategy": self.get_strategy_name(),
                 "Cards_played": [card.name for card
-                                 in self.game["Player_side"]] + spell_used,
+                                 in self.game["player_side"]],
                 "Targets": [target.name for target in targets_attacked],
                 "Mana_used": mana_used,
                 "Damage_done": damage_done,

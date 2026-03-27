@@ -8,8 +8,8 @@ import random
 def main():
     try:
         print("\n=== DataDeck Ability System ===\n")
-        rare_type: list = random.choice(list(Rarity))
-        game: dict = {
+        rare_type = random.choice(list(Rarity))
+        game = {
             "mana": 30
             }
         deck = Deck()
@@ -40,7 +40,7 @@ def main():
         print(f"Attack result: {elite_card.attack(enemy)}")
         print(f"Defense result: {elite_card.defend(enemy.damage)}")
         print("\nMagic Phase:")
-        print(f"Spell cast: {elite_card.cast_spell("FireBall", opponent)}")
+        print(f"Spell cast: {elite_card.cast_spell('FireBall', opponent)}")
         print(f"Mana Channel: {elite_card.channel_mana(4)}")
         print("\nMultiple interface implementation successful!")
     except Exception as err:

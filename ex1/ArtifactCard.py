@@ -13,7 +13,7 @@ class ArtifactCard(Card):
         self.active = False
 
     def get_card_info(self):
-        infos: dict = super().get_card_info()
+        infos = super().get_card_info()
         infos.update({'durability': self.durability,
                       'effect': self.effect,
                       'type': self.type

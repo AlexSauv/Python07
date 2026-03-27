@@ -4,9 +4,9 @@ from ex3.CardFactory import CardFactory
 
 class GameEngine:
     def __init__(self):
-        self.factory: CardFactory = None
-        self.strategy: GameStrategy = None
-        self.turn: dict = {"turns_simulated": 0}
+        self.factory = None
+        self.strategy = None
+        self.turn = {"turns_simulated": 0}
 
     def configure_engine(self, factory: CardFactory,
                          strategy: GameStrategy) -> None:
@@ -32,7 +32,7 @@ class GameEngine:
         self.turn.update({"total_damage": strat["Damage_done"]})
         print(f"Hand: {[card.name for card in hand_on_list]}\n")
         print("Turn execution:")
-        print(f"Strategy {self.turn["strategy_used"]}")
+        print(f"Strategy {self.turn['strategy_used']}")
         return {
                 "Cards_played": strat["Cards_played"],
                 "mana_used": strat["Mana_used"],

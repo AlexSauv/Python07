@@ -14,7 +14,7 @@ class SpellCard(Card):
         self.active: bool = False
 
     def get_card_info(self):
-        infos: dict = super().get_card_info()
+        infos = super().get_card_info()
         infos.update({"effect_type": self.effect_type,
                       "type": self.type
                       })
@@ -54,7 +54,7 @@ class SpellCard(Card):
             if not isinstance(target, (CreatureCard, EliteCard)):
                 raise ValueError("Each target must be Creature or Elite type.")
             if self.effect_type == "damage":
-                target.health -= 3
+                target.health = max(0, target.health - 3)
                 damage_done += 3
                 if target.health <= 0:
                     target.health = 0
@@ -62,11 +62,19 @@ class SpellCard(Card):
             elif self.effect_type == "heal":
                 target.health += 3
             elif self.effect_type == "buff":
-                target.attack += 2
+                if isinstance(target, CreatureCard):
+                    target.attack += 2
+                else:
+                    target.damage += 2
             elif self.effect_type == "debuff":
-                target.attack -= 2
-                if target.attack < 1:
-                    target.attack = 1
+                if isinstance(target, CreatureCard):
+                    target.attack -= 2
+                    if target.attack < 1:
+                        target.attack = 1
+                else:
+                    target.damage += 2
+                    if target.damage < 1:
+                        target.damage = 1
             else:
                 raise ValueError("Unknown type effect")
         self.active = True

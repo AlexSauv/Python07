@@ -1,18 +1,25 @@
 from ex0.Card import Card
 from ex2.Combatable import Combatable
-from Rankable import Rankable
+from ex4.Rankable import Rankable
 import random
 
+
 class TournamentCard(Card, Combatable, Rankable):
-    def __init__(self, name: str, cost: int, rarity: str, attack: int, health: int):
+    def __init__(self, name: str, cost: int, rarity: str,
+                 attack: int, health: int, card_id: str):
         super().__init__(name, cost, rarity)
+        if health < 0:
+            raise ValueError("Health stats must be at least 0")
+        if attack < 0:
+            raise ValueError("Attack stats must be above 0")
+        self.card_id: str = card_id
         self.damage = attack
         self.health = health
-        self.sheild = random.randint(1,4)
-        self.wins = 0
-        self.losses = 0
-        self.rating = 1200
-        self.alive = True
+        self.sheild: int = random.randint(1, 4)
+        self.wins: int = 0
+        self.losses: int = 0
+        self.rating: int = 1200
+        self.dead: bool = False
 
     def play(self, game_state: dict) -> dict:
         if game_state['mana'] < self.cost:
@@ -20,36 +27,59 @@ class TournamentCard(Card, Combatable, Rankable):
         game_state["mana"] -= self.cost
         return {"card_played": self.name,
                 "mana_used": self.cost,
+                "Effect": f"{self.name} is entering in the battlefield"
                 }
 
-    def attack(self, target):
-        if not isinstance(target, TournamentCard):
-            raise ValueError("The opponent must be the same type. (TournamenCard)")
-        res = target.defend(self.damage)
-        return {"Attacker": self.name,
-                "Target": target.name,
-                "Total_damage": self.damage,
-                "Opponent_KO": res["Alive"]
+    def attack(self, target) -> dict:
+        if not isinstance(target, (TournamentCard)):
+            raise ValueError("The card type must be: Tournament.")
+        defense_state = target.defend(self.damage)
+        damage_done = defense_state["damage_taken"]
+        if target.health <= 0:
+            target.health = 0
+            target.dead = True
+        return {"attacker": self.name,
+                "target": target.name,
+                "damage": damage_done,
+                "target_dead": target.dead
                 }
 
-    def defend(self, incoming_damage):
+    def defend(self, incoming_damage: int) -> dict:
+        if not isinstance(incoming_damage, int):
+            raise ValueError("Invalid data damage received.")
         damage_received = incoming_damage - self.sheild
-        if damage_received < 0:
+        if damage_received <= 0:
             damage_received = 0
         self.health -= damage_received
         if self.health <= 0:
-            self.health = 0
-            self.alive = False
-        return {"Total_damage": damage_received,
-                "Health": self.health,
-                "Alive": self.alive
+            self.dead = True
+        return {'defender': self.name,
+                'damage_taken': damage_received,
+                'damage_blocked': self.sheild,
+                'still_alive': not self.dead
                 }
-    
-    def get_combat_stats(self):
-        return super().get_combat_stats()
 
-    def calculate_rating(self):
-        
-    
-    def get_tournament_stats(self) -> dict:
-        return {""}
+    def calculate_rating(self) -> int:
+        self.rating = 1200 + (self.wins * 16) - (self.losses * 66)
+        return self.rating
+
+    def get_combat_stats(self) -> dict:
+        return {"name": self.name,
+                "health": self.health,
+                "Attack": self.damage,
+                "Defense": self.sheild,
+                }
+
+    def update_wins(self, wins: int) -> None:
+        self.wins += wins
+
+    def update_losses(self, losses: int) -> None:
+        self.losses += losses
+
+    def get_rank_info(self) -> dict:
+        return {"Name": self.name,
+                "Card_id": self.card_id,
+                "Interfaces": ["Card", "Combatable", "Rankable"],
+                "Rating": self.rating,
+                "Record": f"{self.wins}-{self.losses}"
+                }

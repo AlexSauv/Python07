@@ -4,7 +4,7 @@ import random
 
 class Deck:
     def __init__(self):
-        self.cards: list[Card] = []
+        self.cards = []
 
     def add_card(self, card: Card) -> None:
         if not isinstance(card, Card):

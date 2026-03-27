@@ -1,8 +1,8 @@
 from ex0.Card import Card
 from ex0.CreatureCard import CreatureCard
+from ex1.SpellCard import SpellCard
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
-from ex1.SpellCard import SpellCard
 from enum import Enum
 import random
 
@@ -17,7 +17,7 @@ class EliteCard(Card, Combatable, Magical):
     def __init__(self, name: str, cost: int, rarity: str,
                  damage: int, health: int, defense: int):
         super().__init__(name, cost, rarity)
-        self.type = "Elite Card"
+        self.type = "Elite card"
         if health < 0:
             raise ValueError("Health stats must be at least 0")
         if damage < 0:
@@ -27,7 +27,7 @@ class EliteCard(Card, Combatable, Magical):
         self.health = health
         self.damage = damage
         self.defense = defense
-        self.combat: int = random.choice(list(Combat_Style))
+        self.combat = random.choice(list(Combat_Style))
         self.combat_type: str = self.combat.value
         self.mana_spell: int = 4
         self.spells = [SpellCard("FireBall", 1, "Common", "damage"),
@@ -55,7 +55,7 @@ class EliteCard(Card, Combatable, Magical):
             raise ValueError("The card type must be: Creature or Elite.")
         if isinstance(target, EliteCard):
             defense_state = target.defend(self.damage)
-            damage_done = defense_state["damage_blocked"]
+            damage_done = defense_state["damage_taken"]
         if isinstance(target, CreatureCard):
             target.health -= self.damage
             damage_done = self.damage
@@ -81,7 +81,7 @@ class EliteCard(Card, Combatable, Magical):
         return {'defender': self.name,
                 'damage_taken': damage_received,
                 'damage_blocked': self.defense,
-                'still_alive': self.dead
+                'still_alive': not self.dead
                 }
 
     def get_combat_stats(self) -> dict:
@@ -116,7 +116,7 @@ class EliteCard(Card, Combatable, Magical):
         return {"caster": self.name,
                 'spell': spell_name,
                 "targets": [target.name for target in targets
-                            if isinstance(target, (CreatureCard, ))],
+                            if isinstance(target, CreatureCard)],
                 "targets_health": [target.health for target in targets],
                 "mana_used": spell.cost
                 }

@@ -7,13 +7,13 @@ import random
 def main() -> None:
     print("\n=== DataDeck Card Foundation ===\n")
     try:
-        rarity: list = random.choice(list(Rarity))
+        rarity = random.choice(list(Rarity))
         dragon = CreatureCard("Fire Dragon", 5, rarity.value, 7, 5)
         goblin = CreatureCard("Goblin Warrior", 1, "common", 3, 4)
         print("Testing Abstract Base Class Design:\n")
         print("CreatureCard Info:")
         print(dragon.get_card_info())
-        game: dict = {
+        game = {
             "mana": 8
             }
         playable: bool = dragon.is_playable(game['mana'])

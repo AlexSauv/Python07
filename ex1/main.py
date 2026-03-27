@@ -9,17 +9,17 @@ import random
 def main():
     try:
         print("\n=== DataDeck Deck Builder ===\n")
-        game: dict = {
+        game = {
             "mana": 30
             }
         deck = Deck()
-        rare_type: list = random.choice(list(Rarity))
+        rare_type = random.choice(list(Rarity))
         deck.add_card(CreatureCard("Fire Dragon", 5,
                                    rare_type.value, 7, 5))
-        rare_type: list = random.choice(list(Rarity))
+        rare_type = random.choice(list(Rarity))
         deck.add_card(SpellCard("Lightning Bolt", 3,
                                 rare_type.value, "damage"))
-        rare_type: list = random.choice(list(Rarity))
+        rare_type = random.choice(list(Rarity))
         deck.add_card(ArtifactCard("Mana Crystal", 2,
                                    rare_type.value, 3,
                                    "Permanent: +1 mana per turn"))
