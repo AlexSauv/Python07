@@ -38,9 +38,9 @@ class EliteCard(Card, Combatable, Magical):
         if game_state['mana'] < self.cost:
             raise ValueError("Not enough mana")
         game_state["mana"] -= self.cost
-        if "battlefield" not in game_state:
-            game_state.update({"battlefield": []})
-        game_state.setdefault("battlefield", []).append(self)
+        if "player_side" not in game_state:
+            game_state.update({"player_side": []})
+        game_state.setdefault("player_side", []).append(self)
         return {"card_played": self.name,
                 "mana_used": self.cost,
                 "effect": f"{self.name} has been played."
@@ -97,7 +97,7 @@ class EliteCard(Card, Combatable, Magical):
 
     def cast_spell(self, spell_name: str, targets: list) -> dict:
         if not isinstance(targets, list):
-            raise ValueError("Targets must be given as a list")
+            raise ValueError("Cast Spell: Targets must be given as a list")
         for target in targets:
             if not isinstance(target, (CreatureCard,EliteCard)):
                 raise ValueError("Each target type must be either Creature or Elite")

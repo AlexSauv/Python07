@@ -33,7 +33,9 @@ class GameEngine:
                 "Cards_played": strat["Cards_played"],
                 "mana_used": strat["Mana_used"],
                 "targets_attacked": strat["Targets"],
-                "damage_dealt": strat["Damage_done"]
+                "damage_dealt": strat["Damage_done"],
+                "Opponent_KO": strat["Targets_killed"],
+                "Victory": strat["Game_win"]
                 }
 
     def get_engine_status(self) -> dict:

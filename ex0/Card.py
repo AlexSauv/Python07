@@ -27,9 +27,8 @@ class Card(ABC):
             }
 
     def is_playable(self, available_mana: int) -> bool:
-        if isinstance(available_mana, int):
-            if available_mana >= self.cost:
-                return True
-            return False
-        else:
+        if not isinstance(available_mana, int):
             raise Exception("Unvalid data format")
+        if available_mana >= self.cost:
+            return True
+        return False

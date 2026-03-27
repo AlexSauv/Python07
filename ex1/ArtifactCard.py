@@ -25,9 +25,9 @@ class ArtifactCard(Card):
         if game_state['mana'] < self.cost:
           raise ValueError("Not enough mana")
         game_state['mana'] -= self.cost
-        if "battlefield" not in game_state:
-            game_state.update({"battlefield": []})
-        game_state.setdefault("battlefield", []).append(self)
+        if "player_side" not in game_state:
+            game_state.update({"player_side": []})
+        game_state.setdefault("player_side", []).append(self)
         return {"card_played": self.name,
                "mana_used": self.cost,
                "effect": self.effect

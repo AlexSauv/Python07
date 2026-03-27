@@ -12,7 +12,14 @@ def main():
         strategy = AggressiveStrategy()
         print(f"Strategy: {strategy.get_strategy_name()}")
         stats = fantasy.get_supported_types()
-        print(f"Available types: {stats}")
+        creature = fantasy.create_artifact(1)
+        print(f"\n\n\n{creature.get_card_info()}")
+        creature = fantasy.create_artifact()
+        print(f"{creature.get_card_info()}")
+        creature = fantasy.create_artifact("Le pet de alpayet")
+        print(f"{creature.get_card_info()}")
+        print(f"\n\n\n")
+        print(f"Available types: {stats.keys()}")
         print("\nSimulating aggressive turn...")
         game = GameEngine()
         game.configure_engine(FantasyCardFactory(), AggressiveStrategy())
@@ -23,7 +30,7 @@ def main():
         print(report)
         print("\nAbstract Factory + Strategy Pattern: Maximum flexibility achieved!")
     except ValueError as err:
-        print(f"Error: {err}")
+        print(f"Game System Error: {err}")
 
 if __name__ == "__main__":
     main()

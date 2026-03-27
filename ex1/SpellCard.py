@@ -7,7 +7,7 @@ class SpellCard(Card):
        super().__init__(name, cost, rarity)
        valid_types = ["damage", "heal", "buff", "debuff"]
        if effect_type not in valid_types:
-          raise ValueError("Unknown effect type")
+          raise ValueError("Spell: Unknown effect type")
        self.effect_type = effect_type
        self.effect = ""
        self.type = "Spell"
@@ -24,12 +24,12 @@ class SpellCard(Card):
         if game_state['mana'] < self.cost:
           raise ValueError("Not enough mana")
         game_state['mana'] -= self.cost
-        if "battlefield" not in game_state:
-            game_state.update({"battlefield": []})
-        game_state.setdefault("battlefield", []).append(self)
+        if "player_side" not in game_state:
+            game_state.update({"player_side": []})
+        game_state.setdefault("player_side", []).append(self)
         if self.active == True:
-            if self.name in game_state["battlefield"]:
-                game_state["battlefield"].remove(self)
+            if self.name in game_state["player_side"]:
+                game_state["player_side"].remove(self)
         if self.effect_type == "damage":
             self.effect = "Deal 3 damage to target"
         elif self.effect_type == "heal":
@@ -48,12 +48,14 @@ class SpellCard(Card):
     def resolve_effect(self, targets: list) -> dict:
         from ex2.EliteCard import EliteCard
         if not isinstance(targets, list):
-             raise ValueError("Targets must be given as a list.")
+             raise ValueError("(Spell) Targets must be given as a list.")
+        damage_done: int = 0
         for target in targets:
             if not isinstance(target, (CreatureCard, EliteCard)):
               raise ValueError("Each target must be Creature or Elite type.")
             if self.effect_type == "damage":
                target.health -= 3
+               damage_done += 3
                if target.health < 0:
                    target.health = 0
             elif self.effect_type == "heal":
@@ -69,5 +71,6 @@ class SpellCard(Card):
         self.active = True
         return {"card_played": self.name,
                 "targets": [target.name for target in targets],
+                "damage": damage_done,
                 "Effect": self.effect
                 }
