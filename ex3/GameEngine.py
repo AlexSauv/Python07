@@ -1,13 +1,15 @@
 from ex3.GameStrategy import GameStrategy
 from ex3.CardFactory import CardFactory
 
+
 class GameEngine:
     def __init__(self):
         self.factory: CardFactory = None
         self.strategy: GameStrategy = None
         self.turn: dict = {"turns_simulated": 0}
 
-    def configure_engine(self, factory: CardFactory, strategy: GameStrategy) -> None:
+    def configure_engine(self, factory: CardFactory,
+                         strategy: GameStrategy) -> None:
         if not isinstance(factory, CardFactory):
             raise ValueError("The Factory Type is unknown")
         if not isinstance(strategy, GameStrategy):
@@ -21,8 +23,7 @@ class GameEngine:
         for cards in hand.values():
             hand_on_list.extend(cards)
         opponent_hand = [self.factory.create_creature(),
-                         self.factory.create_creature(1)
-                        ]
+                         self.factory.create_creature(1)]
         strat = self.strategy.execute_turn(hand_on_list,
                                            opponent_hand)
         self.turn["turns_simulated"] += 1

@@ -21,9 +21,11 @@ def main():
         report = game.get_engine_status()
         print("Game Report:")
         print(report)
-        print("\nAbstract Factory + Strategy Pattern: Maximum flexibility achieved!")
+        print("\nAbstract Factory + Strategy Pattern:"
+              " Maximum flexibility achieved!")
     except ValueError as err:
         print(f"Game System Error: {err}")
+
 
 if __name__ == "__main__":
     main()

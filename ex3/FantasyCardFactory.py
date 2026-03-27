@@ -3,9 +3,9 @@ from ex0.CreatureCard import CreatureCard
 from ex0.Card import Rarity
 from ex1.SpellCard import SpellCard
 from ex1.ArtifactCard import ArtifactCard
-from ex1.Deck import Deck
 from enum import Enum
 import random
+
 
 class Effect(Enum):
     type_1 = "damage"
@@ -13,11 +13,12 @@ class Effect(Enum):
     type_3 = "buff"
     type_4 = "debuff"
 
+
 class FantasyCardFactory(CardFactory):
     def __init__(self):
         self.creatures = [["Dragon", 5, "Legendary", 6, 12],
                           ["Goblin", 3, "Common", 3, 3],
-                          ["Troll", 2, "Common", 2, 4], 
+                          ["Troll", 2, "Common", 2, 4],
                           ["Human King", 4, "Rare", 5, 9]
                           ]
         self.spells = [["Thunder Storm", 3, "Rare", "damage"],
@@ -25,13 +26,17 @@ class FantasyCardFactory(CardFactory):
                        ["Fireball", 3, "Rare", "damage"],
                        ["Demon Slasher", 4, "Legendary", "damage"]
                        ]
-        self.artifacts = [["Diamond Hammer", 3, "Rare", 4, "+3 attack per turn"],
-                          ["Mana Ring", 4, "Legendary", 6, "Permanent: +1 mana per turn"],
-                          ["Potion of health", 1, "Common", 2, "+2 health per turn"],
-                          ["Mana Potion", 2,"Common", 2, "+2 mana per turn"] 
+        self.artifacts = [["Diamond Hammer", 3, "Rare", 4,
+                           "+3 attack per turn"],
+                          ["Mana Ring", 4, "Legendary", 6,
+                           "Permanent: +1 mana per turn"],
+                          ["Potion of health", 1, "Common", 2,
+                           "+2 health per turn"],
+                          ["Mana Potion", 2, "Common", 2,
+                           "+2 mana per turn"]
                           ]
 
-    def create_creature(self, name_or_power = None):
+    def create_creature(self, name_or_power=None):
         if isinstance(name_or_power, str):
             name = name_or_power
             cost = random.randint(1, 7)
@@ -48,8 +53,8 @@ class FantasyCardFactory(CardFactory):
         else:
             choice = random.randint(0, 3)
             return CreatureCard(*self.creatures[choice])
-    
-    def create_spell(self, name_or_power = None):
+
+    def create_spell(self, name_or_power=None):
         if isinstance(name_or_power, str):
             name = name_or_power
             cost = random.randint(1, 4)
@@ -66,8 +71,8 @@ class FantasyCardFactory(CardFactory):
         else:
             choice = random.randint(0, 3)
             return SpellCard(*self.spells[choice])
-    
-    def create_artifact(self, name_or_power = None):
+
+    def create_artifact(self, name_or_power=None):
         if isinstance(name_or_power, str):
             name = name_or_power
             cost = random.randint(1, 5)
@@ -85,7 +90,7 @@ class FantasyCardFactory(CardFactory):
         else:
             choice = random.randint(0, 3)
             return ArtifactCard(*self.artifacts[choice])
-    
+
     def create_themed_deck(self, size):
         deck = {"Creatures": [],
                 "Spells": [],
@@ -100,7 +105,7 @@ class FantasyCardFactory(CardFactory):
             else:
                 deck["Artifacts"].append(self.create_artifact())
         return deck
-    
+
     def get_supported_types(self):
         return {"Creatures": self.creatures,
                 "Spells": self.spells,

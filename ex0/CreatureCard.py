@@ -5,9 +5,11 @@ class CreatureCard(Card):
     def __init__(self, name: str, cost: int,
                  rarity: str, attack: int, health: int):
         super().__init__(name, cost, rarity)
-        if attack <= 0: raise ValueError("Attack damage must be positive")
+        if attack <= 0:
+            raise ValueError("Attack damage must be positive")
         self.attack = attack
-        if health < 0: raise ValueError("Health must be positive")
+        if health < 0:
+            raise ValueError("Health must be positive")
         self.health = health
         self.type: str = "Creature"
         self.dead: bool = False

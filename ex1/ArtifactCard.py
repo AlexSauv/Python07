@@ -5,7 +5,8 @@ class ArtifactCard(Card):
     def __init__(self, name: str, cost: int, rarity: str,
                  durability: int, effect: str):
         super().__init__(name, cost, rarity)
-        if durability < 0: raise ValueError("Please make the durability is above zero")
+        if durability < 0:
+            raise ValueError("Please make the durability is above zero")
         self.durability = durability
         self.effect = effect
         self.type = "Artifact"
@@ -23,18 +24,18 @@ class ArtifactCard(Card):
         if not isinstance(game_state, dict):
             raise ValueError("Game state must be given as a dict.")
         if game_state['mana'] < self.cost:
-          raise ValueError("Not enough mana")
+            raise ValueError("Not enough mana")
         game_state['mana'] -= self.cost
         if "player_side" not in game_state:
             game_state.update({"player_side": []})
         game_state["player_side"].append(self)
         return {"card_played": self.name,
-               "mana_used": self.cost,
-               "effect": self.effect
-               }
+                "mana_used": self.cost,
+                "effect": self.effect
+                }
 
     def activate_ability(self) -> dict:
-        if self.active == False:
+        if self.active is False:
             self.active = True
         if self.durability == 0:
             print("The artifact doesn't exist anymore.")

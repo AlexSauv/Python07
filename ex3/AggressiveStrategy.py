@@ -6,13 +6,13 @@ from ex2.EliteCard import EliteCard
 from ex3.GameStrategy import GameStrategy
 from ex1.Deck import Deck
 
+
 class AggressiveStrategy(GameStrategy):
     def __init__(self):
         self.deck = Deck()
         self.game = {"Player_side": [],
                      "opponent_health": 15,
-                     "Game_win": False
-                    }
+                     "Game_win": False}
 
     def execute_turn(self, hand: list, battlefield: list) -> dict:
         self.game.update({"mana": 12})
@@ -22,8 +22,8 @@ class AggressiveStrategy(GameStrategy):
         if isinstance(battlefield, list):
             for target in battlefield:
                 if not isinstance(target, (CreatureCard, EliteCard)):
-                    raise ValueError("The battlefield is corrupted, " 
-                                     "must be filled with Creature and Elite type")
+                    raise ValueError("The battlefield is corrupted, must"
+                                     " be filled with Creature and Elite type")
         if not isinstance(hand, list):
             raise ValueError("Hand must be given as a list")
         hand.sort(key=lambda card: card.cost)
@@ -46,7 +46,7 @@ class AggressiveStrategy(GameStrategy):
                     else:
                         damage_data = card.attack_target(targets[0])
                         damage_done += damage_data["damage_dealt"]
-                        if targets[0].dead == True:
+                        if targets[0].dead is True:
                             target_killed.append(targets[0].name)
                             targets.pop(0)
                 elif isinstance(card, EliteCard):
@@ -55,7 +55,7 @@ class AggressiveStrategy(GameStrategy):
                     else:
                         damage_data = card.attack(targets[0])
                         damage_done += damage_data["damage"]
-                        if targets[0].dead == True:
+                        if targets[0].dead is True:
                             target_killed.append(targets[0].name)
                             targets.pop(0)
                 elif isinstance(card, SpellCard):
@@ -66,7 +66,7 @@ class AggressiveStrategy(GameStrategy):
                         damage_data = card.resolve_effect(targets)
                         damage_done += damage_data["damage"]
                         for target in targets:
-                            if target.dead == True:
+                            if target.dead is True:
                                 target_killed.append(target.name)
                                 targets.remove(target)
                 elif isinstance(card, ArtifactCard):
@@ -79,7 +79,8 @@ class AggressiveStrategy(GameStrategy):
         if self.game["opponent_health"] <= 0:
             self.game["Game_win"] = True
         return {"Strategy": self.get_strategy_name(),
-                "Cards_played": [card.name for card in self.game["Player_side"]] + spell_used,
+                "Cards_played": [card.name for card
+                                 in self.game["Player_side"]] + spell_used,
                 "Targets": [target.name for target in targets_attacked],
                 "Mana_used": mana_used,
                 "Damage_done": damage_done,
@@ -93,4 +94,3 @@ class AggressiveStrategy(GameStrategy):
     def prioritize_targets(self, available_targets: list) -> list:
         available_targets.sort(key=lambda card: card.health)
         return available_targets
-    

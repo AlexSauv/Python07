@@ -13,8 +13,3 @@ class Combatable(ABC):
     @abstractmethod
     def get_combat_stats(self) -> dict:
         pass
-
-
-
-
-
