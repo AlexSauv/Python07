@@ -20,8 +20,11 @@ class GameEngine:
         hand_on_list = []
         for cards in hand.values():
             hand_on_list.extend(cards)
-        opponent_hand = [self.factory.create_creature()]
-        strat = self.strategy.execute_turn(hand_on_list, opponent_hand)
+        opponent_hand = [self.factory.create_creature(),
+                         self.factory.create_creature(1)
+                        ]
+        strat = self.strategy.execute_turn(hand_on_list,
+                                           opponent_hand)
         self.turn["turns_simulated"] += 1
         self.turn.update({"strategy_used": self.strategy.get_strategy_name()})
         self.turn.update({"cards_created": len(hand)})
@@ -33,7 +36,7 @@ class GameEngine:
                 "Cards_played": strat["Cards_played"],
                 "mana_used": strat["Mana_used"],
                 "targets_attacked": strat["Targets"],
-                "damage_dealt": strat["Damage_done"],
+                "damage_dealt": self.turn["total_damage"],
                 "Opponent_KO": strat["Targets_killed"],
                 "Victory": strat["Game_win"]
                 }

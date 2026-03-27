@@ -20,7 +20,7 @@ class CreatureCard(Card):
         game_state["mana"] -= self.cost
         if "player_side" not in game_state:
             game_state.update({"player_side": []})
-        game_state.setdefault("player_side", []).append(self)
+        game_state["player_side"].append(self)
         return {"card_played": self.name,
                 "mana_used": self.cost,
                 "effect": "Creature summoned to battlefield"
@@ -31,7 +31,7 @@ class CreatureCard(Card):
         if not isinstance(target, (CreatureCard, EliteCard)):
             raise ValueError("Make sure to give a Creature Card")
         target.health -= self.attack
-        if target.health < 0:
+        if target.health <= 0:
             target.health = 0
             target.dead = True
         return {'attacker': self.name,

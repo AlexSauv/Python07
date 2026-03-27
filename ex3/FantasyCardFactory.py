@@ -12,10 +12,11 @@ class Effect(Enum):
     type_2 = "heal"
     type_3 = "buff"
     type_4 = "debuff"
+
 class FantasyCardFactory(CardFactory):
     def __init__(self):
         self.creatures = [["Dragon", 5, "Legendary", 6, 12],
-                          ["Goblin", 3, "Common", 3, 6],
+                          ["Goblin", 3, "Common", 3, 3],
                           ["Troll", 2, "Common", 2, 4], 
                           ["Human King", 4, "Rare", 5, 9]
                           ]

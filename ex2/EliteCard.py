@@ -40,7 +40,7 @@ class EliteCard(Card, Combatable, Magical):
         game_state["mana"] -= self.cost
         if "player_side" not in game_state:
             game_state.update({"player_side": []})
-        game_state.setdefault("player_side", []).append(self)
+        game_state["player_side"].append(self)
         return {"card_played": self.name,
                 "mana_used": self.cost,
                 "effect": f"{self.name} has been played."
@@ -56,6 +56,7 @@ class EliteCard(Card, Combatable, Magical):
             target.health -= self.damage
             damage_done = self.damage
         if target.health <= 0:
+               target.health = 0
                target.dead = True        
         return {"attacker": self.name,
                 "target": target.name,

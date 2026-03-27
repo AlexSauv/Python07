@@ -26,7 +26,7 @@ class SpellCard(Card):
         game_state['mana'] -= self.cost
         if "player_side" not in game_state:
             game_state.update({"player_side": []})
-        game_state.setdefault("player_side", []).append(self)
+        game_state["player_side"].append(self)
         if self.active == True:
             if self.name in game_state["player_side"]:
                 game_state["player_side"].remove(self)
@@ -56,8 +56,9 @@ class SpellCard(Card):
             if self.effect_type == "damage":
                target.health -= 3
                damage_done += 3
-               if target.health < 0:
+               if target.health <= 0:
                    target.health = 0
+                   target.dead = True
             elif self.effect_type == "heal":
                target.health += 3
             elif self.effect_type == "buff":
